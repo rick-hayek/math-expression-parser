@@ -22,7 +22,7 @@ namespace Test
             var str = "((1))-((2*(-2+5))+6)/(2*3)";
             MathExpression expr = new MathExpression(str);
             var result = expr.Resolve();
-            Assert.IsTrue(double.Parse(result) == -1);
+            Assert.IsTrue(result == -1);
         }
     }
 }

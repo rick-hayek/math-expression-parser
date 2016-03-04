@@ -14,7 +14,7 @@ namespace MathExpressionParser
             this.expr = expr;
         }
 
-        public string Resolve()
+        public double Resolve()
         {
             bool bracketExists = false;
             var len = expr.Length;
@@ -61,7 +61,7 @@ namespace MathExpressionParser
 
             if (!bracketExists)
             {
-                return new UnbracketedMathExpression(expr).Calculate().ToString();
+                return new UnbracketedMathExpression(expr).Calculate();
             }
 
             throw new ArgumentException(string.Format("'{0}' is not a valid mathematical expression.", this.expr), "expr");
