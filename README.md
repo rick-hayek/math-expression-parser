@@ -1,10 +1,5 @@
-# parser
-string parser lib
-update readme.md
---test done --
+# Math Expression Parser
 
-# new edit
-edit this file from git command
+Parse a string that represents a mathematical expression.<br/> 
+And provide the functionality of calculating result of the expression.
 
-# edit from test_branch
-2016/3/1 16:16

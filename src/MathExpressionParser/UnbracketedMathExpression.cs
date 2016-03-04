@@ -6,23 +6,25 @@ using System.Threading.Tasks;
 
 namespace MathExpressionParser
 {
-    public class Expr
+    /// <summary>
+    /// Represent a raw mathematical expression without any brackets '()'
+    /// </summary>
+    public class UnbracketedMathExpression
     {
         private string expr;
         private bool isParsed;
 
-        public Expr(string expr)
+        public UnbracketedMathExpression(string expr)
         {
             this.expr = expr.Replace(" ", ""); // Remove white spaces
 
             this.Validate();
 
             this.isParsed = false;
-            //this.Parse();
         }
 
-        private Expr _left;
-        public Expr Left
+        private UnbracketedMathExpression _left;
+        public UnbracketedMathExpression Left
         {
             get
             {
@@ -35,8 +37,8 @@ namespace MathExpressionParser
             }
         }
 
-        private Expr _right;
-        public Expr Righ
+        private UnbracketedMathExpression _right;
+        public UnbracketedMathExpression Righ
         {
             get
             {
@@ -102,7 +104,7 @@ namespace MathExpressionParser
                 //}
                 //else
                 //{
-                //    throw new ArgumentException(string.Format("'{0}' is not a valid mathematical string.", RawValue), "expr");
+                //    throw new ArgumentException(string.Format("'{0}' is not a valid mathematical expression.", RawValue), "expr");
                 //}
 
                 return double.Parse(this.RawValue);
@@ -198,8 +200,8 @@ namespace MathExpressionParser
                     this.ExprType = ExpressionType.Expression;
                     this.Op = operatorChar.Value.ToOperator();
 
-                    this.Left = new Expr(expr.Remove(operatorPosition));
-                    this.Righ = new Expr(expr.Remove(0, operatorPosition + 1));
+                    this.Left = new UnbracketedMathExpression(expr.Remove(operatorPosition));
+                    this.Righ = new UnbracketedMathExpression(expr.Remove(0, operatorPosition + 1));
 
                     return;
                 }
@@ -263,14 +265,15 @@ namespace MathExpressionParser
                 throw new ArgumentNullException("expr", "Expression cannot be null or empty.");
             }
 
-            // Check the first character. The 1st ch cannot be '.', '*', or '/'
+            // Check the first character. The 1st ch cannot be '.', '*', '/', or ')'
             char first = expr[0];
-            if (first == '.' || first == '*' || first == '/')
+            if (first == '.' || first == '*' || first == '/' || first == ')')
             {
                 throw new ArgumentException(string.Format("Illeagal Math Expression. Character: {0}; Position: {1}", first, 0), "expr");
             }
 
             // Check brackets
+
 
             for (int i = 0; i < expr.Length; i++)
             {
