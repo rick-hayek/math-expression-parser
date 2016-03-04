@@ -11,9 +11,18 @@ namespace Test
         public void TestMethod()
         {
             var str = "-1*2+5-6/2*3";
-            Expr expr = new Expr(str);
+            UnbracketedMathExpression expr = new UnbracketedMathExpression(str);
             var result = expr.Calculate();
             Assert.IsTrue(result == -6);
+        }
+
+        [TestMethod]
+        public void BracketedExpression()
+        {
+            var str = "((1))-((2*(-2+5))+6)/(2*3)";
+            MathExpression expr = new MathExpression(str);
+            var result = expr.Resolve();
+            Assert.IsTrue(double.Parse(result) == -1);
         }
     }
 }
