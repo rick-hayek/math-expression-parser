@@ -8,13 +8,17 @@ namespace MathExpressionParser
 {
     public class MathExpression
     {
+        private const char CONST_OpenBraket = '(';
+        private const char CONST_ClosedBraket = ')';
+
         string expr;
         public MathExpression(string expr)
         {
             this.expr = expr;
+            this.expr.IsValidMathExpression();
         }
 
-        public double Resolve()
+        public double Evaluate()
         {
             bool bracketExists = false;
             var len = expr.Length;
@@ -30,11 +34,11 @@ namespace MathExpressionParser
             for (indexFirstCloseBracket = 0; indexFirstCloseBracket < len; indexFirstCloseBracket++)
             {
                 var ch = expr[indexFirstCloseBracket];
-                if (bracketExists = (ch == ')')) // find the 1st ')'
+                if (bracketExists = (ch == CONST_ClosedBraket)) // find the 1st ')'
                 {
                     for (indexMatchedOpenBracket = indexFirstCloseBracket - 1; indexMatchedOpenBracket >= 0; indexMatchedOpenBracket--)
                     {
-                        if (expr[indexMatchedOpenBracket] == '(') // find the matched '(' with the first ')'
+                        if (expr[indexMatchedOpenBracket] == CONST_OpenBraket) // find the matched '(' with the first ')'
                         {
                             if (indexMatchedOpenBracket == 0)
                             {
@@ -49,11 +53,11 @@ namespace MathExpressionParser
                             afterBracketExpr = expr.Substring(indexFirstCloseBracket + 1, len - indexFirstCloseBracket - 1);
 
                             UnbracketedMathExpression math = new UnbracketedMathExpression(insideBracketExpr);
-                            resultOfFirstBracketedExpression = math.Calculate();
+                            resultOfFirstBracketedExpression = (math.Calculate());
 
                             tempExpr = beforeBracketExpr + resultOfFirstBracketedExpression.ToString() + afterBracketExpr;
 
-                            return new MathExpression(tempExpr).Resolve();
+                            return new MathExpression(tempExpr).Evaluate();
                         }
                     }
                 }
