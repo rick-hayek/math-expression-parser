@@ -39,7 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExpressionType.cs" />
+    <Compile Include="Extension.cs" />
     <Compile Include="MathExpression.cs" />
+    <Compile Include="Operator.cs" />
     <Compile Include="UnbracketedMathExpression.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

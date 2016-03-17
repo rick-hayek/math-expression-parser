@@ -16,7 +16,7 @@ namespace MathExpressionParser
 
         public UnbracketedMathExpression(string expr)
         {
-            this.expr = expr.Replace(" ", ""); // Remove white spaces
+            this.expr = expr;
 
             this.Validate();
 
@@ -96,18 +96,16 @@ namespace MathExpressionParser
 
             if (ExprType == ExpressionType.SingleValue)
             {
-                //double result = 0;
+                double result = 0;
 
-                //if (double.TryParse(RawValue, out result))
-                //{
-                //    return result;
-                //}
-                //else
-                //{
-                //    throw new ArgumentException(string.Format("'{0}' is not a valid mathematical expression.", RawValue), "expr");
-                //}
-
-                return double.Parse(this.RawValue);
+                if (double.TryParse(RawValue, out result))
+                {
+                    return result;
+                }
+                else
+                {
+                    throw new ArgumentException(string.Format("'{0}' is not a valid double value", RawValue), "expr");
+                }
             }
 
             var left = this.Left.Calculate();
@@ -217,78 +215,6 @@ namespace MathExpressionParser
         private bool Validate()
         {
             return this.expr.IsValidMathExpression();
-        }
-    }
-
-    public enum Operator
-    {
-        Invalid = -1,
-
-        Add = '+',
-        Subtract = '-',
-        Multiply = '*',
-        Divide = '/',
-    }
-
-    public enum ExpressionType
-    {
-        Expression,
-        SingleValue,
-        //SignedSingleValue,
-    }
-
-    public static class Extensions2
-    {
-        public static bool IsOperator(this char ch)
-        {
-            return ch == '+' || ch == '-' || ch == '*' || ch == '/';
-        }
-
-        public static Operator ToOperator(this char ch)
-        {
-            try
-            {
-                return (Operator)Enum.ToObject(typeof(Operator), ch);
-            }
-            catch (Exception)
-            {
-                return Operator.Invalid;
-            }
-        }
-
-        public static bool IsValidMathExpression(this string expr)
-        {
-            expr = expr.Replace(" ", "");
-
-            if (string.IsNullOrEmpty(expr))
-            {
-                throw new ArgumentNullException("expr", "Expression cannot be null or empty.");
-            }
-
-            // Check the first character. The 1st ch cannot be '.', '*', '/', or ')'
-            char first = expr[0];
-            if (first == '.' || first == '*' || first == '/' || first == ')')
-            {
-                throw new ArgumentException(string.Format("Illeagal Math Expression. Character: {0}; Position: {1}", first, 0), "expr");
-            }
-
-            // Check brackets
-
-
-            for (int i = 0; i < expr.Length; i++)
-            {
-                var ch = expr[i];
-                if ((ch >= '0' && ch <= '9') ||
-                    (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '(' || ch == ')') ||
-                    (ch == '.'))
-                {
-                    continue;
-                }
-
-                throw new ArgumentException(string.Format("Illeagal Math Expression. Character: {0}; Position: {1}", ch, i), "expr");
-            }
-
-            return true;
         }
     }
 }
